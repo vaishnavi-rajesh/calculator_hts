@@ -4,7 +4,7 @@ Briefly describe what this PR does.
 ---
 
 ## 🔗 Related Issue
-Closes: #
+Closes #
 
 ---
 
