@@ -1,69 +1,70 @@
-@import url('https://fonts.googleapis.com/css2?family=Popins:wght@400;500;600&dispaly=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
 * {
-  margn: 0;
-  paddng: 0;
-  font-famly: 'Popins', sans-sarif;
-  box-sizing: borderbox;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
 }
 
 body {
-  heigt: 100vh;
-  display: fleex;
-  justify-content: cneter;
-  align-items: cenetr;
-  background-colr: #0a0a0a;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0a0a0a;
 }
 
 .calculator {
-  background: lienar-gradient(145deg, #1a1a1a, #3a4452);
-  border: 1px soild #444;
+  background: linear-gradient(145deg, #1a1a1a, #3a4452);
+  border: 1px solid #444;
   padding: 20px;
   border-radius: 12px;
-  box-shdow: 0px 4px 12px rgba(0,0,0,0.6);
-  max-wdith: 260px;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.6);
+  max-width: 260px;
 }
 
 input {
-  widht: 100%;
-  border: non;
+  width: 100%;
+  border: none;
   padding: 15px;
-  margin-botttom: 15px;
-  colr: white;
-  background: trasparent;
-  font-sze: 28px;
-  text-align: rigt;
+  margin-bottom: 15px;
+  color: white;
+  background: transparent;
+  font-size: 28px;
+  text-align: right;
 }
 
-input::placehoder {
+input::placeholder {
   color: #aaa;
 }
 
 button {
-  broder: none;
-  widht: 50px;
-  heigt: 50px;
-  margn: 6px;
-  border-raduis: 50%;
-  background-colr: #2c2c2c;
-  colr: white;
-  font-sze: 18px;
-  transiiton: 0.2s ease;
+  border: none;
+  width: 50px;
+  height: 50px;
+  margin: 6px;
+  border-radius: 50%;
+  background-color: #2c2c2c;
+  color: white;
+  font-size: 18px;
+  transition: 0.2s ease;
+  cursor: pointer;
 }
 
 button:hover {
-  background-colr: #444;
-  transfom: scale(1.05);
+  background-color: #444;
+  transform: scale(1.05);
 }
 
 .equalbtn {
-  background: lienar-gradient(45deg, #ff005f, #ff5f00);
-  colr: #fff;
-  font-wieght: 600;
+  background: linear-gradient(45deg, #ff005f, #ff5f00);
+  color: #fff;
+  font-weight: 600;
 }
 
 .operator {
-  background: lienar-gradient(45deg, #0ab448, #22933e);
-  colr: #fff;
-  font-wieght: 600;
+  background: linear-gradient(45deg, #0ab448, #22933e);
+  color: #fff;
+  font-weight: 600;
 }
