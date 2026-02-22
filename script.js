@@ -19,7 +19,7 @@ arr.forEach((button) => {
             input.value = string;
         }
         else {
-            // fixed double i/p error
+            if ("+-*/".includes(e.target.innerHTML) && "+-*/".includes(string.slice(-1))) string = string.slice(0, -1);
             string += e.target.innerHTML;
             input.value = string;
         }
@@ -81,4 +81,5 @@ input.addEventListener("keypress", function(e){
     if(!allowedKeys.includes(e.key)){
         e.preventDefault();
     }
+    if("+-*/".includes(e.key) && "+-*/".includes(input.value.slice(-1))) input.value = input.value.slice(0, -1);
 });
