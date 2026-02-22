@@ -29,3 +29,11 @@ arr.forEach((button) => {
     });
 });
 
+//block user from typing invalid keys like alphabets and special chars like @ # $
+const display = document.getElementById("inputBox");
+const allowedKeys = "0123456789+-*/().";
+display.addEventListener("keypress", function(e){
+    if(!allowedKeys.includes(e.key)){
+        e.preventDefault();
+    }
+});
