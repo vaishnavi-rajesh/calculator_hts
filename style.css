@@ -92,3 +92,12 @@ button:hover {
     background: linear-gradient(45deg, #ff005f, #ff5f00);
     font-weight: bold;
 }
+.preview {
+    height: 20px;
+    color: #0ab448;
+    font-size: 16px;
+    text-align: right;
+    margin-bottom: 10px;
+    padding-right: 10px;
+    opacity: 0.8;
+}

@@ -1,7 +1,7 @@
 let input = document.getElementById("inputBox");
 let buttons = document.querySelectorAll("button:not(#copyBtn)");
 let string = "";
-
+const preview = document.getElementById("preview");
 // ==================== COPY BUTTON ====================
 const copyBtn = document.getElementById("copyBtn");
 let copyTimeout = null;
@@ -48,6 +48,25 @@ function factorial(n) {
         fact *= i;
     }
     return fact;
+}
+function updatePreview() {
+    if (!string) {
+        preview.textContent = "";
+        return;
+    }
+
+    try {
+        let result = eval(string);
+
+        if (!isFinite(result)) {
+            preview.textContent = "";
+            return;
+        }
+
+        preview.textContent = "= " + result;
+    } catch {
+        preview.textContent = "";
+    }
 }
 
 buttons.forEach((button) => {
@@ -112,6 +131,7 @@ buttons.forEach((button) => {
             string += value;
             input.value = string;
             hideCopyBtn(); // user is still typing, hide the button
+            updatePreview();  
         }
     });
 });
@@ -129,6 +149,7 @@ document.addEventListener("keydown", (e) => {
                 input.value = string;
                 string = "";
                 showCopyBtn();
+                preview.textContent = "";
             }
         } catch {
             input.value = "Error";
@@ -156,4 +177,8 @@ input.addEventListener("paste", (e) => {
         input.value = string;
         hideCopyBtn();
     }
+});
+input.addEventListener("input", () => {
+    string = input.value;
+    updatePreview();
 });
