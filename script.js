@@ -146,14 +146,6 @@ input.addEventListener("keypress", (e) => {
     }
 });
 
-//block user from typing invalid keys like alphabets and special chars like @ # $
-const allowedKeys = "0123456789+-*/().";
-input.addEventListener("keypress", function(e){
-    if(!allowedKeys.includes(e.key)){
-        e.preventDefault();
-    }
-});
-
 // Allow pasting values into the calculator (e.g. a copied result)
 input.addEventListener("paste", (e) => {
     e.preventDefault();
@@ -164,4 +156,5 @@ input.addEventListener("paste", (e) => {
         input.value = string;
         hideCopyBtn();
     }
+
 });
