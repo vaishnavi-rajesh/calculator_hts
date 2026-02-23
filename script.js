@@ -2,6 +2,9 @@ let input = document.getElementById("inputBox");
 let buttons = document.querySelectorAll("button:not(#copyBtn)");
 let string = "";
 const preview = document.getElementById("preview");
+let lastOperator = null;
+let lastOperand = null;
+let lastResult = null;
 // ==================== COPY BUTTON ====================
 const copyBtn = document.getElementById("copyBtn");
 let copyTimeout = null;
@@ -73,31 +76,60 @@ buttons.forEach((button) => {
     button.addEventListener("click", (e) => {
         let value = e.target.innerHTML;
 
-        if (value === "=") {
-            try {
-                string = eval(string);
-                // eval("5/0") returns Infinity — treat it as an error
-                if (!isFinite(string)) {
-                    input.value = "Can't divide by zero";
-                    string = "";
-                    hideCopyBtn();
-                } else {
-                    input.value = string;
-                    string = "";
-                    showCopyBtn();
-                }
-            } catch {
-                input.value = "Error";
-                string = "";
-                hideCopyBtn();
-            }
+    if (value === "=") {
+    try {
+
+        // If user presses "=" again without new input
+        if (string === "" && lastOperator && lastOperand !== null) {
+            let expression = lastResult + lastOperator + lastOperand;
+            lastResult = eval(expression);
+            input.value = lastResult;
+            showCopyBtn();
+            return;
         }
 
-        else if (value === "AC") {
+        // Normal calculation
+        let result = eval(string);
+
+        if (!isFinite(result)) {
+            input.value = "Can't divide by zero";
             string = "";
-            input.value = "";
-            hideCopyBtn(); // clear resets everything
+            preview.textContent = "";
+            hideCopyBtn();
+            return;
         }
+
+        // Extract last operator and operand
+        let match = string.match(/([+\-*/])(\d+\.?\d*)$/);
+        if (match) {
+            lastOperator = match[1];
+            lastOperand = match[2];
+        }
+
+        lastResult = result;
+
+        input.value = result;
+        string = "";
+        preview.textContent = "";
+        showCopyBtn();
+
+    } catch {
+        input.value = "Error";
+        string = "";
+        preview.textContent = "";
+        hideCopyBtn();
+    }
+}
+
+    else if (value === "AC") {
+    string = "";
+    input.value = "";
+    lastOperator = null;
+    lastOperand = null;
+    lastResult = null;
+    preview.textContent = "";
+    hideCopyBtn();
+}
 
         else if (value === "DEL") {
             string = string.slice(0, -1);
@@ -138,25 +170,46 @@ buttons.forEach((button) => {
 
 // Enter key support
 document.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-        try {
-            string = eval(input.value);
-            if (!isFinite(string)) {
-                input.value = "Can't divide by zero";
-                string = "";
-                hideCopyBtn();
-            } else {
-                input.value = string;
-                string = "";
-                showCopyBtn();
-                preview.textContent = "";
-            }
-        } catch {
-            input.value = "Error";
-            string = "";
-            hideCopyBtn();
+ if (e.key === "Enter") {
+    try {
+
+        if (string === "" && lastOperator && lastOperand !== null) {
+            let expression = lastResult + lastOperator + lastOperand;
+            lastResult = eval(expression);
+            input.value = lastResult;
+            showCopyBtn();
+            return;
         }
+
+        let result = eval(input.value);
+
+        if (!isFinite(result)) {
+            input.value = "Can't divide by zero";
+            string = "";
+            preview.textContent = "";
+            hideCopyBtn();
+            return;
+        }
+
+        let match = input.value.match(/([+\-*/])(\d+\.?\d*)$/);
+        if (match) {
+            lastOperator = match[1];
+            lastOperand = match[2];
+        }
+
+        lastResult = result;
+        input.value = result;
+        string = "";
+        preview.textContent = "";
+        showCopyBtn();
+
+    } catch {
+        input.value = "Error";
+        string = "";
+        preview.textContent = "";
+        hideCopyBtn();
     }
+}
 });
 
 // Block invalid keyboard input
