@@ -57,9 +57,16 @@ buttons.forEach((button) => {
         if (value === "=") {
             try {
                 string = eval(string);
-                input.value = string;
-                string = "";
-                showCopyBtn(); // result is ready
+                // eval("5/0") returns Infinity — treat it as an error
+                if (!isFinite(string)) {
+                    input.value = "Can't divide by zero";
+                    string = "";
+                    hideCopyBtn();
+                } else {
+                    input.value = string;
+                    string = "";
+                    showCopyBtn();
+                }
             } catch {
                 input.value = "Error";
                 string = "";
@@ -114,9 +121,15 @@ document.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
         try {
             string = eval(input.value);
-            input.value = string;
-            string = "";
-            showCopyBtn(); // result is ready
+            if (!isFinite(string)) {
+                input.value = "Can't divide by zero";
+                string = "";
+                hideCopyBtn();
+            } else {
+                input.value = string;
+                string = "";
+                showCopyBtn();
+            }
         } catch {
             input.value = "Error";
             string = "";
