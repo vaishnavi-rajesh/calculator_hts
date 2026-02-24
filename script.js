@@ -1,5 +1,5 @@
 let input = document.getElementById("inputBox");
-let buttons = document.querySelectorAll("button:not(#copyBtn)");
+let buttons = document.querySelectorAll(".calc button");
 let string = "";
 const preview = document.getElementById("preview");
 let lastOperator = null;
@@ -160,11 +160,14 @@ buttons.forEach((button) => {
         }
 
         else {
+            // fixed double i/p error
             string += value;
+            string = string.replace(/(^|[+\-*/(])0+(?=\d)/g, '$1');
             input.value = string;
             hideCopyBtn(); // user is still typing, hide the button
             updatePreview();  
         }
+        input.scrollLeft = input.scrollWidth;
     });
 });
 
@@ -230,8 +233,13 @@ input.addEventListener("paste", (e) => {
         input.value = string;
         hideCopyBtn();
     }
+ multiple_press
 });
 input.addEventListener("input", () => {
     string = input.value;
     updatePreview();
 });
+=======
+
+});
+
