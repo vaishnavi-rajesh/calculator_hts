@@ -19,18 +19,54 @@ body {
     box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
 
+/* Wraps the input + copy button together */
+.display-wrapper {
+    position: relative;
+    margin-bottom: 20px;
+}
+
 /* Input display */
 input {
     width: 100%;
     padding: 20px;
+    padding-left: 50px; /* space for copy button */
     font-size: 28px;
     text-align: right;
-    margin-bottom: 20px;
     background: #2c2c3c;
     color: #fff;
     border: none;
     border-radius: 12px;
     box-shadow: inset 0 3px 6px rgba(0,0,0,0.2);
+    box-sizing: border-box;
+}
+
+/* Copy button */
+.copy-btn {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    border: none;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: 0.2s ease;
+    display: none; /* shown only when result exists */
+}
+
+.copy-btn:hover {
+    opacity: 1;
+    background: rgba(255,255,255,0.2);
+}
+
+.copy-btn.copied {
+    color: #0ab448;
+    opacity: 1;
 }
 
 /* Button Grid */
