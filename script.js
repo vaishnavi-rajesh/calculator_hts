@@ -1,5 +1,5 @@
 let input = document.getElementById("inputBox");
-let buttons = document.querySelectorAll("button:not(#copyBtn)");
+let buttons = document.querySelectorAll(".calc button");
 let string = "";
 
 // ==================== COPY BUTTON ====================
@@ -111,9 +111,11 @@ buttons.forEach((button) => {
         else {
             if ("+-*/".includes(e.target.innerHTML) && "+-*/".includes(string.slice(-1))) string = string.slice(0, -1);
             string += value;
+            string = string.replace(/(^|[+\-*/(])0+(?=\d)/g, '$1');
             input.value = string;
             hideCopyBtn(); // user is still typing, hide the button
         }
+        input.scrollLeft = input.scrollWidth;
     });
 });
 
