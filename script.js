@@ -109,7 +109,7 @@ buttons.forEach((button) => {
         }
 
         else {
-            // fixed double i/p error
+            if ("+-*/".includes(e.target.innerHTML) && "+-*/".includes(string.slice(-1))) string = string.slice(0, -1);
             string += value;
             string = string.replace(/(^|[+\-*/(])0+(?=\d)/g, '$1');
             input.value = string;
@@ -159,5 +159,5 @@ input.addEventListener("paste", (e) => {
         input.value = string;
         hideCopyBtn();
     }
-
+    if("+-*/".includes(e.key) && "+-*/".includes(input.value.slice(-1))) input.value = input.value.slice(0, -1);
 });
