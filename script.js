@@ -20,7 +20,7 @@ function hideCopyBtn() {
 
 copyBtn.addEventListener("click", () => {
     const result = input.value;
-    if (!result || result === "Error") return;
+    if (!result || result === "Error" || result === "Can't divide by zero") return;
 
     navigator.clipboard.writeText(result).then(() => {
         copyBtn.textContent = "Copied!";
@@ -92,8 +92,8 @@ buttons.forEach((button) => {
         }
 
         else if (value === "DEL") {
-            input.value = input.value.slice(0, -1);
-            string = input.value;
+            string = string.slice(0, -1);
+            input.value = string;
             if (!string) hideCopyBtn();
             updatePreview();
         }
@@ -121,9 +121,16 @@ buttons.forEach((button) => {
         }
 
         else {
-            input.value += value;
-            string = input.value;
+            // Prevent double operators
+            if ("+-*/".includes(value) && "+-*/".includes(string.slice(-1))) {
+                string = string.slice(0, -1);
+            }
+
+            string += value;
+
+            // Remove leading zeros
             string = string.replace(/(^|[+\-*/(])0+(?=\d)/g, '$1');
+
             input.value = string;
             hideCopyBtn();
             updatePreview();
@@ -206,3 +213,4 @@ input.addEventListener("input", () => {
     string = input.value;
     updatePreview();
 });
+// =====================================================
