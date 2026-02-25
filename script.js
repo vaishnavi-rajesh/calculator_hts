@@ -56,6 +56,8 @@ buttons.forEach((button) => {
 
         if (value === "=") {
             try {
+                // Ensure no leading zeros to prevent octal interpretation
+                string = string.replace(/(^|[+\-*/(])0+(?=\d)/g, '$1');
                 string = eval(string);
                 // eval("5/0") returns Infinity — treat it as an error
                 if (!isFinite(string)) {
@@ -111,6 +113,7 @@ buttons.forEach((button) => {
         else {
             if ("+-*/".includes(e.target.innerHTML) && "+-*/".includes(string.slice(-1))) string = string.slice(0, -1);
             string += value;
+            // Ensure no leading zeros (e.g., "02" becomes "2", "00" becomes "0")
             string = string.replace(/(^|[+\-*/(])0+(?=\d)/g, '$1');
             input.value = string;
             hideCopyBtn(); // user is still typing, hide the button
@@ -123,7 +126,9 @@ buttons.forEach((button) => {
 document.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
         try {
-            string = eval(input.value);
+            // Ensure no leading zeros before eval to prevent octal interpretation
+            let expression = input.value.replace(/(^|[+\-*/(])0+(?=\d)/g, '$1');
+            string = eval(expression);
             if (!isFinite(string)) {
                 input.value = "Can't divide by zero";
                 string = "";
@@ -159,5 +164,5 @@ input.addEventListener("paste", (e) => {
         input.value = string;
         hideCopyBtn();
     }
-    if("+-*/".includes(e.key) && "+-*/".includes(input.value.slice(-1))) input.value = input.value.slice(0, -1);
+    if ("+-*/".includes(e.key) && "+-*/".includes(input.value.slice(-1))) input.value = input.value.slice(0, -1);
 });
