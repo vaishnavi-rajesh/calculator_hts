@@ -1,6 +1,7 @@
 let input = document.getElementById("inputBox");
 let buttons = document.querySelectorAll(".calc button");
 let string = "";
+const allowedKeys = "0123456789+-*/().!";
 
 // ==================== COPY BUTTON ====================
 const copyBtn = document.getElementById("copyBtn");
@@ -56,7 +57,7 @@ buttons.forEach((button) => {
 
         if (value === "=") {
             try {
-                string = eval(string);
+                string = eval(input.value);
                 // eval("5/0") returns Infinity — treat it as an error
                 if (!isFinite(string)) {
                     input.value = "Can't divide by zero";
@@ -81,7 +82,7 @@ buttons.forEach((button) => {
         }
 
         else if (value === "DEL") {
-            string = string.slice(0, -1);
+            string = input.value.slice(0, -1);
             input.value = string;
             // Hide copy button if display is cleared by DEL
             if (!string) hideCopyBtn();
@@ -141,8 +142,12 @@ document.addEventListener("keydown", (e) => {
     }
 });
 
+// Sync the 'string' variable with manual input edits
+input.addEventListener("input", (e) => {
+    string = e.target.value;
+});
+
 // Block invalid keyboard input
-const allowedKeys = "0123456789+-*/().!";
 input.addEventListener("keypress", (e) => {
     if (!allowedKeys.includes(e.key)) {
         e.preventDefault();
