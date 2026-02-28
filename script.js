@@ -2,6 +2,7 @@ let input = document.getElementById("inputBox");
 let buttons = document.querySelectorAll(".calc button");
 let preview = document.getElementById("preview");
 let string = "";
+const allowedKeys = "0123456789+-*/().!";
 
 let lastOperator = null;
 let lastOperand = null;
@@ -144,7 +145,7 @@ buttons.forEach((button) => {
         }
 
         else if (value === "DEL") {
-            string = string.slice(0, -1);
+            string = input.value.slice(0, -1);
             input.value = string;
             if (!string) hideCopyBtn();
             updatePreview();
@@ -200,11 +201,13 @@ document.addEventListener("keydown", (e) => {
         calculate();
     }
 });
-// =====================================================
 
+// Sync the 'string' variable with manual input edits
+input.addEventListener("input", (e) => {
+    string = e.target.value;
+});
 
 // ==================== BLOCK INVALID KEYBOARD INPUT ====================
-const allowedKeys = "0123456789+-*/().!";
 
 input.addEventListener("keydown", (e) => {
     if (
