@@ -3,6 +3,10 @@ let buttons = document.querySelectorAll(".calc button");
 let preview = document.getElementById("preview");
 let string = "";
 
+let lastOperator = null;
+let lastOperand = null;
+let lastResult = null;
+
 // ==================== COPY BUTTON ====================
 const copyBtn = document.getElementById("copyBtn");
 let copyTimeout = null;
@@ -42,7 +46,7 @@ copyBtn.addEventListener("click", () => {
 // ==================== FACTORIAL ====================
 function factorial(n) {
     if (n < 0 || !Number.isInteger(n)) return "Error";
-    if (n > 170) return "Too Large"; // prevent overflow
+    if (n > 170) return "Too Large";
     let fact = 1;
     for (let i = 1; i <= n; i++) {
         fact *= i;
@@ -54,22 +58,67 @@ function factorial(n) {
 
 // ==================== LIVE PREVIEW ====================
 function updatePreview() {
-    if (!input.value) {
+    if (!string) {
         preview.textContent = "";
         return;
     }
 
     try {
-        let result = eval(input.value);
-
+        let result = eval(string);
         if (!isFinite(result)) {
             preview.textContent = "";
             return;
         }
-
         preview.textContent = "= " + result;
     } catch {
         preview.textContent = "";
+    }
+}
+// =====================================================
+
+
+// ==================== CALCULATE FUNCTION ====================
+function calculate() {
+    try {
+
+        // If "=" pressed repeatedly
+        if (string === "" && lastOperator && lastOperand !== null) {
+            let expression = lastResult + lastOperator + lastOperand;
+            lastResult = eval(expression);
+            input.value = lastResult;
+            showCopyBtn();
+            return;
+        }
+
+        let result = eval(string);
+
+        if (!isFinite(result)) {
+            input.value = "Can't divide by zero";
+            string = "";
+            preview.textContent = "";
+            hideCopyBtn();
+            return;
+        }
+
+        // Save last operator and operand
+        let match = string.match(/([+\-*/])(\d+\.?\d*)$/);
+        if (match) {
+            lastOperator = match[1];
+            lastOperand = match[2];
+        }
+
+        lastResult = result;
+
+        input.value = result;
+        string = "";
+        preview.textContent = "";
+        showCopyBtn();
+
+    } catch {
+        input.value = "Error";
+        string = "";
+        preview.textContent = "";
+        hideCopyBtn();
     }
 }
 // =====================================================
@@ -85,8 +134,11 @@ buttons.forEach((button) => {
         }
 
         else if (value === "AC") {
-            input.value = "";
             string = "";
+            input.value = "";
+            lastOperator = null;
+            lastOperand = null;
+            lastResult = null;
             preview.textContent = "";
             hideCopyBtn();
         }
@@ -139,30 +191,6 @@ buttons.forEach((button) => {
         input.scrollLeft = input.scrollWidth;
     });
 });
-// =====================================================
-
-
-// ==================== CALCULATE FUNCTION ====================
-function calculate() {
-    try {
-        let result = eval(input.value);
-
-        if (!isFinite(result)) {
-            input.value = "Can't divide by zero";
-            hideCopyBtn();
-        } else {
-            input.value = result;
-            showCopyBtn();
-        }
-
-        string = "";
-        preview.textContent = "";
-    } catch {
-        input.value = "Error";
-        string = "";
-        hideCopyBtn();
-    }
-}
 // =====================================================
 
 
